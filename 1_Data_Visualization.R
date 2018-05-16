@@ -1,3 +1,9 @@
+### Author: Kate Sabey          ###
+### Date: May 14, 2018          ###
+### Purpose: Data Visualization ###
+### Data: MERS                  ###
+
+
 #set working directory as path to downloaded csv file by using the Session drop down menu and selecting "Working Directory"
 #or use setwd("C:/Users/workshop/Desktop/R")
 
