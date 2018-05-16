@@ -1,0 +1,65 @@
+---
+title: "MERS"
+author: "Kate Sabey"
+date: "May 16, 2018"
+output: 
+    html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+
+## MERS Background
+
+Middle East Respiratory Syndrome Corona Virus (MERS-CoV) is a single-stranded virus related to SARS and other coronaviruses that causes severe respiratory illness. We will use a data set on the spread of MERS-CoV available at: https://github.com/rambaut/MERS-Cases/blob/gh-pages/data/cases.csv
+
+```{r packages, include=FALSE}
+library(ggplot2)
+library(plotly)
+library(lubridate)
+```
+
+
+## Upload Data
+
+After downloading the "cases.csv" file to your working directory, load the data into R Studio
+
+```{r mers, include=TRUE}
+mers <- read.csv("cases.csv")
+```
+
+
+## Manipulate Data
+
+Format a new onset column to contain onset values as dates.
+
+```{r data, include=TRUE}
+mers$onset2 <- ymd(mers$onset)
+```
+
+Calculate the days elapsed between the date of onset and the start of the epidemic.
+
+```{r data2, include=TRUE}
+day0 <- min(na.omit(mers$onset2))
+```
+
+Create a column containing values for the time since the start of the epidemic.
+
+```{r data3, include=TRUE}
+mers$epi.day <- as.numeric(mers$onset2 - day0)
+```
+
+
+## Plot a MERS Epidemic Curve
+
+```{r epi.day, include = TRUE}
+epi.curve <- ggplot(data=mers) +
+  geom_bar(mapping=aes(x=epi.day)) +
+  labs(x='Epidemic day', y='Case count', title='Global count of MERS cases by date of symptom onset', 
+       caption="Data from: https://github.com/rambaut/MERS-Cases/blob/gh-pages/data/cases.csv")
+
+ggplotly(epi.curve)
+```
+
